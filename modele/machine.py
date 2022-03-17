@@ -1,5 +1,13 @@
 class Machine:
     def __init__(self, machine_id, constraint):
+        """
+        :param machine_id: 机器ID start = 0
+        :param constraint: 机器约束 start = 0
+                           0 WB 没有约束
+                           1 RCB 工件在下一台机器上离开时释放当前机器
+                           2 RSB 工件在下一台机器上开始加工时释放当前机器
+                           3 RCBn 工件在下一台机器上完成加工时释放当前机器
+        """
         if machine_id is None:
             raise Exception("id must be not empty!")
         self.id = machine_id
