@@ -155,7 +155,7 @@ class Factory:
 
             # 根据约束生成机器
             for i, value in enumerate(constraints):
-                machine = Machine(i, value)
+                machine = Machine(i, eval(value))
                 self.machines.append(machine)
 
             # 读取剩下的所有行
