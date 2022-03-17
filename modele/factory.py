@@ -184,7 +184,7 @@ class Factory:
     def save_data(self, filename):
         """
         存储工件和机器数据
-        :param filename: 数据问题
+        :param filename: 数据文件
         :return:
         """
         factory_data = []
