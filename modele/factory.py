@@ -146,6 +146,8 @@ class Factory:
                 # 添加阻塞时间
                 machine.workflow.append([1, last_workflow_time, next_last_workflow_time])
 
+        return self.machines[-1].get_last_workflow_time()
+
     def load_data(self, filename):
         """
         读取工件和机器数据
