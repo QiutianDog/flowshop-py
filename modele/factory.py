@@ -28,6 +28,9 @@ class Factory:
             self.machines.append(machine)
 
     def complete(self, order):
+        # 清除机器加工数据
+        self.clear_machines_workflow()
+
         # 根据 order 依次取出工件
         for job_id in order:
             job = self.jobs[job_id]
@@ -147,6 +150,11 @@ class Factory:
                 machine.workflow.append([1, last_workflow_time, next_last_workflow_time])
 
         return self.machines[-1].get_last_workflow_time()
+
+    def clear_machines_workflow(self):
+        if self.machines is not None:
+            for machine in self.machines:
+                machine.clear_workflow()
 
     def load_data(self, filename):
         """

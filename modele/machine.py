@@ -16,6 +16,9 @@ class Machine:
         self.constraint = constraint
         self.workflow = []
 
+    def clear_workflow(self):
+        self.workflow = []
+
     def get_last_workflow_time(self):
         """
         :return: 最后一个事件的结束时间
