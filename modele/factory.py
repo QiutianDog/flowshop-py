@@ -147,6 +147,11 @@ class Factory:
                 machine.workflow.append([1, last_workflow_time, next_last_workflow_time])
 
     def load_data(self, filename):
+        """
+        读取工件和机器数据
+        :param filename: 数据文件
+        :return:
+        """
         self.jobs = []
         self.machines = []
         with open(filename, "r", encoding="utf-8") as f:
@@ -166,6 +171,11 @@ class Factory:
                 self.jobs.append(job)
 
     def save_data(self, filename):
+        """
+        存储工件和机器数据
+        :param filename: 数据问题
+        :return:
+        """
         factory_data = []
 
         # 第一行写入约束
