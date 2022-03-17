@@ -137,7 +137,7 @@ class Factory:
 
         # 最后再遍历一遍机器，加上RCB和RCBn的阻塞时间
         for machine in self.machines:
-            if machine.constraint == "RCB" or machine.constraint == "RCBn":
+            if machine.constraint == 1 or machine.constraint == 3:
                 last_workflow_time = machine.get_last_workflow_time()
 
                 # 获取下一台的完工时间
