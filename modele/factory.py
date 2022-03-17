@@ -179,6 +179,7 @@ class Factory:
                 work_times = [eval(item) for item in line.strip().split(",")]
                 job = Job(i, work_times)
                 self.jobs.append(job)
+        print("load jobs and machines data from %s" % filename)
 
     def save_data(self, filename):
         """
@@ -199,4 +200,5 @@ class Factory:
             factory_data.append(job.work_times)
 
         np.savetxt(filename, factory_data, fmt='%d', delimiter=',')
+        print("save jobs and machines data to %s" % filename)
 
