@@ -13,3 +13,6 @@ class Job:
         if 0 <= machine_id < len(self.work_times):
             return self.work_times[machine_id]
         raise Exception("machine_id is error!", machine_id)
+
+    def get_sum_work_times(self):
+        return sum(self.work_times)
