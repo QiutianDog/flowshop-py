@@ -17,7 +17,7 @@ class TSSFactory(Factory):
     def tss_complete(self):
         """
         Tss 启发式构造方法解决问题
-        :return:
+        :return: 局部最短完工时间
         """
         self.clear_results()
 
