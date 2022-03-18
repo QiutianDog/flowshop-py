@@ -1,5 +1,6 @@
 import os
 import sys
+import time
 
 import numpy as np
 
@@ -9,6 +10,7 @@ from modele.factory import Factory
 class TSSFactory(Factory):
     def __init__(self):
         super().__init__()
+        self.tss_time = None
         self.tss_order = None
         self.tss_res = sys.maxsize
 
@@ -18,6 +20,8 @@ class TSSFactory(Factory):
         :return:
         """
         self.clear_results()
+
+        start_time = time.time()
 
         # 获得所有工件的编号
         jobs_num = len(self.jobs)
@@ -49,15 +53,18 @@ class TSSFactory(Factory):
 
             i = i + 1
 
+        self.tss_time = time.time() - start_time
+
         return self.tss_res
 
     def clear_results(self):
+        self.tss_time = None
         self.tss_order = None
         self.tss_res = sys.maxsize
 
     def save_results(self, filename):
-        # 第一行写入顺序, 第二行写入结果
-        results = [self.tss_order, self.tss_res]
+        # 第一行写入顺序, 第二行写入结果, 第三行写入时间
+        results = [self.tss_order, self.tss_res, self.tss_time]
         np.savetxt(filename, results, fmt='%s', delimiter=',')
         print("save results to %s" % filename)
 
