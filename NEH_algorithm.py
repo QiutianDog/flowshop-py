@@ -23,11 +23,12 @@ class NEHFactory(Factory):
         start_time = time.time()
 
         # 根据总加工时间降序排列
-        self.jobs.sort(key=lambda x: sum(x.work_times), reverse=True)
+        temp_jobs = [job for job in self.jobs]
+        temp_jobs.sort(key=lambda x: sum(x.work_times), reverse=True)
 
         # 获得所有工件 id
         jobs_num = len(self.jobs)
-        ids = [job.id for job in self.jobs]
+        ids = [job.id for job in temp_jobs]
 
         # 获取一个临时的 order
         tmp = [ids[0]]
