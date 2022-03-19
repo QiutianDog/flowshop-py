@@ -33,7 +33,11 @@ class Factory:
 
         # 根据 order 依次取出工件
         for job_id in order:
-            job = self.jobs[job_id]
+            job = None
+            for j in self.jobs:
+                if j.job_id == job_id:
+                    job = j
+                    break
             # 获取第一台机器的最终完成时间, 也是当前工件进入机器的时间
             last_workflow_time = self.machines[0].get_last_workflow_time()
 
