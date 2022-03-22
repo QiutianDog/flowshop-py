@@ -37,7 +37,7 @@ class CHEFactory(Factory):
             self.orders.append(order)
             self.results.append(res)
 
-        for epoch in range(5):
+        for epoch in range(jobs_nums):
             # 去除一半劣势个体
             len_orders = len(self.orders)
             for _ in range(len_orders // 2):
@@ -55,20 +55,9 @@ class CHEFactory(Factory):
             for _ in range(len_orders // 2):
                 r1 = random.randint(0, len(self.results) - 1)
                 r2 = random.randint(0, len(self.results) - 1)
-                r1_order = []
-                for job_id in self.orders[r1]:
-                    if job_id % 2 == 0:
-                        r1_order.append(job_id)
 
-                r2_order = []
-                for job_id in self.orders[r2]:
-                    if job_id % 2 == 1:
-                        r2_order.append(job_id)
-
-                order = []
-                for i in range(len(r1_order)):
-                    order.append(r1_order[i])
-                    order.append(r2_order[i])
+                # 混合，得到子序列
+                order = self.get_mix_order(self.orders[r1], self.orders[r2])
 
                 res = self.complete(order)
                 self.orders.append(order)
@@ -91,6 +80,21 @@ class CHEFactory(Factory):
 
         return self.che_res
 
+    def get_mix_order(self, order1, order2):
+        lenght = len(order1)
+        lst = order1.copy()
+        for i in range(lenght):
+            lst[order1.index(order2[i])] = i
+
+        order = order1.copy()
+        for i in range(lenght // 2):
+            idx = random.randint(0, lenght - 1)
+
+            temp = order[lst[idx]]
+            order[lst[idx]] = order[idx]
+            order[idx] = temp
+
+        return order
 
     def clear_results(self):
         self.orders = []
