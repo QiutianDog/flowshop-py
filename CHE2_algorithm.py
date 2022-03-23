@@ -4,9 +4,8 @@ import sys
 import time
 
 import numpy as np
-import temp as temp
 
-from utils.order import random_order
+
 from modele.factory import Factory
 
 
