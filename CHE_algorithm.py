@@ -30,6 +30,7 @@ class CHEFactory(Factory):
 
         # 随机生成一群个体 (n 个)
         jobs_nums = len(self.jobs)
+
         for _ in range(jobs_nums):
             order = random_order(jobs_nums)
             res = self.complete(order)
