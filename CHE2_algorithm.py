@@ -5,7 +5,6 @@ import time
 
 import numpy as np
 
-
 from modele.factory import Factory
 
 
@@ -37,8 +36,11 @@ class CHE2Factory(Factory):
         self.results.append(res)
 
         # 破坏重构生成一堆种群
-        for i in range(1, 10):
-            order, res = self.destroy_and_construct(order, i)
+        for i in range(10):
+            des_num = random.randint(1, 10)
+            if des_num > jobs_nums:
+                des_num = jobs_nums
+            order, res = self.destroy_and_construct(order, des_num)
             self.orders.append(order)
             self.results.append(res)
 
@@ -56,8 +58,11 @@ class CHE2Factory(Factory):
             # 破坏重构
             for idx in range(1, len(self.results)):
                 temp_order = self.orders[idx]
-                for i in range(1, 11):
-                    order, res = self.destroy_and_construct(temp_order, i)
+                for i in range(5):
+                    des_num = random.randint(1, 10)
+                    if des_num > jobs_nums:
+                        des_num = jobs_nums
+                    order, res = self.destroy_and_construct(temp_order, destroy_num)
                     self.orders.append(order)
                     self.results.append(res)
 
@@ -144,7 +149,6 @@ class CHE2Factory(Factory):
             result = min_res
 
         return temp, result
-
 
     def get_mix_order(self, order1, order2):
         lenght = len(order1)
