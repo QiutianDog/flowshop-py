@@ -125,7 +125,7 @@ class CHE2Factory(Factory):
         # 重新插入最佳位置
         for job_id in destroyed_list:
             min_res = sys.maxsize
-            min_idx = None
+            min_idx = 0
 
             # 每个工件都有 n 种插法
             for idx in range(len(temp)):
@@ -180,11 +180,11 @@ class CHE2Factory(Factory):
 if __name__ == '__main__':
     ROOT_DIR = os.getcwd()
     FACTORY_DATA_PATH = ROOT_DIR + '/data/fac/'
-    TSS_RESULT_PATH = ROOT_DIR + '/data/che2/'
+    CHE2_RESULT_PATH = ROOT_DIR + '/data/che2/'
     if os.path.exists(FACTORY_DATA_PATH) is False:
         os.makedirs(FACTORY_DATA_PATH)
-    if os.path.exists(TSS_RESULT_PATH) is False:
-        os.makedirs(TSS_RESULT_PATH)
+    if os.path.exists(CHE2_RESULT_PATH) is False:
+        os.makedirs(CHE2_RESULT_PATH)
 
     che_factory = CHE2Factory()
 
@@ -199,4 +199,4 @@ if __name__ == '__main__':
 
         # 存储结果
         res_filename = filename.split(".")[0] + '.res'
-        che_factory.save_results(TSS_RESULT_PATH + res_filename)
+        che_factory.save_results(CHE2_RESULT_PATH + res_filename)
