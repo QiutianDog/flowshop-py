@@ -62,7 +62,7 @@ class CHE2Factory(Factory):
                     des_num = random.randint(1, 10)
                     if des_num > jobs_nums:
                         des_num = jobs_nums
-                    order, res = self.destroy_and_construct(temp_order, destroy_num)
+                    order, res = self.destroy_and_construct(temp_order, des_num)
                     self.orders.append(order)
                     self.results.append(res)
 
