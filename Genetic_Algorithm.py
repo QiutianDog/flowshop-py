@@ -95,6 +95,7 @@ class GeneticFactory(Factory):
         self.genetic_order = self.orders_end[index]
         self.genetic_result = self.results_end[index]
         self.genetic_time = time.time() - start_time
+        print(self.results_end)
 
     def mutations_order(self, order):
         """
@@ -246,7 +247,7 @@ if __name__ == '__main__':
         genetic_factory.load_data(FACTORY_DATA_PATH + filename)
 
         # 计算结果
-        genetic_factory.genetic_complete()
+        genetic_factory.genetic_complete(epochs=500)
 
         # 存储结果
         res_filename = filename.split(".")[0] + '.res'
