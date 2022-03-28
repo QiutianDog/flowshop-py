@@ -30,6 +30,7 @@ def draw_result(result_list, label_list, draw_type, save_dir, save_results=False
         for index, group in enumerate(groups, start=1):
             # 分割画布
             ax = plt.subplot(2, 3, index)
+            ax.set_title("%s jobs" % group)
 
             y = []
             keys = result_dict.keys()
@@ -38,7 +39,7 @@ def draw_result(result_list, label_list, draw_type, save_dir, save_results=False
                     y.append(result_dict[key])
             x = [i for i in range(len(y))]
 
-            ax.plot(x, y, colors[index % 7] + "o-", label=name+"_"+draw_type)
+            ax.plot(x, y, colors[label_list.index(name) % 7] + "o-", label=name+"_"+draw_type)
 
     fig.legend(labels=label_list, loc="center")
 
@@ -68,4 +69,4 @@ if __name__ == '__main__':
 
     # 绘图
     draw_result(result_list, label_list, "res", ROOT_DIR + "/data/", save_results=True)
-    draw_result(time_list, label_list, "time", ROOT_DIR + "/data/", save_results=True)
+    # draw_result(time_list, label_list, "time", ROOT_DIR + "/data/", save_results=True)
