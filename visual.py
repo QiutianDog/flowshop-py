@@ -49,8 +49,7 @@ def draw_result(result_list, label_list, draw_type, save_dir, save_results=False
             filename = ""
             for name in label_list:
                 filename = filename + name + "_"
-            filename = filename[:-1]
-            save_path = os.path.join(save_dir, filename + ".png")
+            save_path = os.path.join(save_dir, filename + draw_type + ".png")
             plt.savefig(save_path, format="png", bbox_inches="tight")
             print("sava in " + save_path)
 
@@ -69,3 +68,4 @@ if __name__ == '__main__':
 
     # 绘图
     draw_result(result_list, label_list, "res", ROOT_DIR + "/data/", save_results=True)
+    draw_result(time_list, label_list, "time", ROOT_DIR + "/data/", save_results=True)
