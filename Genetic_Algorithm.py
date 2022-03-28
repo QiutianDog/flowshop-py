@@ -43,7 +43,7 @@ class GeneticFactory(Factory):
                     # 从orders中随机选取两个序列
                     orders_num = len(self.results)
                     indexs = [idx for idx in range(orders_num)]
-                    weights = [1 / idx for idx in range(1, orders_num + 1)]
+                    weights = [(orders_num - idx) / orders_num for idx in range(orders_num)]
                     idx1, idx2 = random.choices(indexs, weights, k=2)
                     while idx1 == idx2:
                         idx1, idx2 = random.choices(indexs, weights, k=2)
