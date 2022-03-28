@@ -36,7 +36,7 @@ def draw_result(result_list, label_list, draw_type, save_dir, save_results=False
             keys = result_dict.keys()
             for key in keys:
                 if key.split("_")[0] == str(group):
-                    y.append(result_dict[key])
+                    y.append(eval(result_dict[key]))
             x = [i for i in range(len(y))]
 
             ax.plot(x, y, colors[label_list.index(name) % 7] + "o-", label=name+"_"+draw_type)
@@ -69,4 +69,4 @@ if __name__ == '__main__':
 
     # 绘图
     draw_result(result_list, label_list, "res", ROOT_DIR + "/data/", save_results=True)
-    # draw_result(time_list, label_list, "time", ROOT_DIR + "/data/", save_results=True)
+    draw_result(time_list, label_list, "time", ROOT_DIR + "/data/", save_results=True)
