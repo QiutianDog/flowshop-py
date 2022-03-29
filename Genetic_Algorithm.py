@@ -293,7 +293,7 @@ if __name__ == '__main__':
         genetic_factory.load_data(FACTORY_DATA_PATH + filename)
 
         # 计算结果
-        genetic_factory.genetic_complete(epochs=500)
+        genetic_factory.genetic_complete(epochs=1000)
 
         # 存储结果
         res_filename = filename.split(".")[0] + '.res'
