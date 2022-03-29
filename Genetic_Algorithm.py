@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 import numpy as np
 from modele.factory import Factory
@@ -174,13 +175,16 @@ class GeneticFactory(Factory):
         :param generate_num: 序列个数
         """
         n = 0
-        while n < generate_num:
+        while n < generate_num - 1:
             order = [i for i in range(job_num)]
             random.shuffle(order)
             result = self.complete(order)
             self.orders.append(order)
             self.results.append(result)
             n = n + 1
+        order, result = self.neh_complete()
+        self.orders.append(order)
+        self.results.append(result)
 
     def __synchronous_sort(self, orders, results, reverse=False):
         """
@@ -227,6 +231,48 @@ class GeneticFactory(Factory):
         results = [self.genetic_order, self.genetic_result, self.genetic_time]
         np.savetxt(filename, results, fmt='%s', delimiter=',')
         print("save results to %s" % filename)
+
+    def neh_complete(self):
+        order = []
+        result = None
+
+        # 根据总加工时间降序排列
+        temp_jobs = [job for job in self.jobs]
+        temp_jobs.sort(key=lambda x: sum(x.work_times), reverse=True)
+
+        # 获得所有工件 id
+        jobs_num = len(self.jobs)
+        ids = [job.id for job in temp_jobs]
+
+        # 获取一个临时的 order
+        tmp = [ids[0]]
+
+        i = 1
+        while i < jobs_num:
+            min_res = sys.maxsize
+            min_index = 0
+
+            for idx in range(i + 1):
+                # 插入对应位置
+                tmp.insert(idx, ids[i])
+                # 计算结果
+                res = self.complete(tmp)
+                if res < min_res:
+                    min_res = res
+                    min_index = idx
+
+                # 回溯到原本状态
+                tmp.pop(idx)
+
+            # 每轮决定一个结果最小的插入位置，插入工件
+            tmp.insert(min_index, ids[i])
+
+            order = tmp
+            result = min_res
+
+            i = i + 1
+
+        return order, result
 
 
 if __name__ == '__main__':
