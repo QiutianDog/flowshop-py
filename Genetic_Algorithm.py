@@ -49,7 +49,6 @@ class GeneticFactory(Factory):
                     while idx1 == idx2:
                         idx1, idx2 = random.choices(indexs, weights, k=2)
                     child_order1, child_order2 = self.cross_order(self.orders[idx1], self.orders[idx2])
-
                     # 把新的结果添加到中间群落里
                     res1 = self.complete(child_order1)
                     res2 = self.complete(child_order2)
@@ -60,15 +59,34 @@ class GeneticFactory(Factory):
 
                 # 变异
                 if self.__try_trigger(self.mutations_probability) is True:
-                    # 从orders中随机选取一个序列
+                    # 从orders中随机选取一个序列，进行变异
                     orders_num = len(self.results)
                     indexs = [idx for idx in range(orders_num)]
                     weights = [1 / idx for idx in range(1, orders_num + 1)]
                     idx = random.choices(indexs, weights)[0]
+                    # 四种变异都变一下
+                    # 插入重排变异
+                    ins_order, ins_res = self.insert_order(self.orders[idx])
+                    self.orders_mid.append(ins_order)
+                    self.results_mid.append(ins_res)
+
+                    # 交换变异
                     mut_order = self.mutations_order(self.orders[idx])
-                    res = self.complete(mut_order)
+                    mut_res = self.complete(mut_order)
                     self.orders_mid.append(mut_order)
-                    self.results_mid.append(res)
+                    self.results_mid.append(mut_res)
+
+                    # 相邻交换变异
+                    exc_order = self.exchange_order(self.orders[idx])
+                    exc_res = self.complete(exc_order)
+                    self.orders_mid.append(exc_order)
+                    self.results_mid.append(exc_res)
+
+                    # 倒置变异
+                    rev_order = self.reverse_order(self.orders[idx])
+                    rev_res = self.complete(rev_order)
+                    self.orders_mid.append(rev_order)
+                    self.results_mid.append(rev_res)
 
             # 计算 result 和 mid result中的序列完工时间，进行排序，取前job_num个作为新的种群，清空 mid
             # 把结果全放到mid中进行计算
@@ -112,6 +130,72 @@ class GeneticFactory(Factory):
         mut_order = [item for item in order]
         mut_order[l], mut_order[r] = mut_order[r], mut_order[l]
         return mut_order
+
+    def exchange_order(self, order):
+        """
+        随机选取两个相邻工件，交换前后顺序
+        :param order: 原序列
+        :return: 交换后的序列
+        """
+        length = len(order)
+        i = random.randint(0, length - 2)
+        exc_order = [item for item in order]
+        exc_order[i], exc_order[i + 1] = exc_order[i + 1], exc_order[i]
+        return exc_order
+
+    def reverse_order(self, order):
+        """
+        随机选取两个工件，将这两道工件之间的顺序完全倒置
+        :param order: 原序列
+        :return: 倒置部分之后的序列
+        """
+        length = len(order)
+        l = random.randint(0, length - 1)
+        r = random.randint(0, length - 1)
+        while l == r:
+            r = random.randint(0, length - 1)
+        if l > r:
+            l, r = r, l
+
+        rev_order = [item for item in order]
+        while l < r:
+            rev_order[l], rev_order[r] = rev_order[r], rev_order[l]
+            l = l + 1
+            r = r - 1
+        return rev_order
+
+    def insert_order(self, order):
+        """
+        从序列中选出一个工件 重新插入最合适的地方
+        :param order: 原序列
+        :return: 新序列，结果
+        """
+        length = len(order)
+        temp = [item for item in order]
+
+        # 从队列中取出1个工件，并重新选择地方插入放回
+        destroyed = temp.pop(random.randint(0, length - 1))
+
+        # 重新插入最佳位置
+        min_res = sys.maxsize
+        min_idx = 0
+
+        # 每个工件都有 n 种插法
+        for idx in range(len(temp)):
+            temp.insert(idx, destroyed)
+            res = self.complete(temp)
+
+            if res < min_res:
+                min_res = res
+                min_idx = idx
+
+            # 返回原貌
+            temp.pop(idx)
+
+        # 放入结果最小的位置
+        temp.insert(min_idx, destroyed)
+
+        return temp, min_res
 
     def cross_order(self, order1, order2):
         """
