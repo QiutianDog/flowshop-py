@@ -36,6 +36,9 @@ class GeneticFactory(Factory):
         # 从小到大排序
         self.__synchronous_sort(self.orders, self.results, False)
 
+        # 重复的epoch次数 重复100次就终止
+        repeat_epochs = 0
+        last_epoch_result = 0
         for epoch in range(epochs):
 
             for _ in range(job_num):
@@ -107,6 +110,15 @@ class GeneticFactory(Factory):
             # 将最优结果存入end中
             self.orders_end.append(self.orders[0])
             self.results_end.append(self.results[0])
+
+            # 判断是否终止
+            if self.results[0] == last_epoch_result:
+                repeat_epochs = repeat_epochs + 1
+                if repeat_epochs > 100:
+                    break
+            else:
+                last_epoch_result = self.results[0]
+                repeat_epochs = 0
 
         # 50个epoch完成后 从end中筛选出最小的
         min_res = min(self.results_end)
