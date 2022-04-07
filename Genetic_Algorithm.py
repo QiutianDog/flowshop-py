@@ -1,3 +1,4 @@
+import datetime
 import os
 import sys
 import time
@@ -119,6 +120,10 @@ class GeneticFactory(Factory):
             else:
                 last_epoch_result = self.results[0]
                 repeat_epochs = 0
+
+            now = datetime.datetime.now()
+            print("%s [%s] cost: %.2f s, epoch: %d, result: %d" % (
+                now.strftime('%Y-%m-%d %H:%M:%S'), self.filename, time.time() - start_time, epoch, self.results[0]))
 
         # 50个epoch完成后 从end中筛选出最小的
         min_res = min(self.results_end)

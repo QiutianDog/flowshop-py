@@ -1,3 +1,5 @@
+import os
+
 import numpy as np
 from modele.job import Job
 from modele.machine import Machine
@@ -7,6 +9,7 @@ class Factory:
     def __init__(self):
         self.jobs = None
         self.machines = None
+        self.filename = None
 
     def generate_data(self, job_num, machine_num):
         self.jobs = []
@@ -179,6 +182,7 @@ class Factory:
                 work_times = [eval(item) for item in line.strip().split(",")]
                 job = Job(i, work_times)
                 self.jobs.append(job)
+        self.filename = os.path.basename(filename)
         print("load jobs and machines data from %s" % filename)
 
     def save_data(self, filename):
@@ -201,4 +205,3 @@ class Factory:
 
         np.savetxt(filename, factory_data, fmt='%d', delimiter=',')
         print("save jobs and machines data to %s" % filename)
-
