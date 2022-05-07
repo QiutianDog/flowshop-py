@@ -1,6 +1,7 @@
 import os
 
 import numpy as np
+from matplotlib import pyplot as plt
 from modele.job import Job
 from modele.machine import Machine
 
@@ -205,3 +206,27 @@ class Factory:
 
         np.savetxt(filename, factory_data, fmt='%d', delimiter=',')
         print("save jobs and machines data to %s" % filename)
+
+    def show_gantt(self):
+        fig = plt.figure()
+        ax = fig.add_axes([0.1, 0.1, 0.8, 0.8])
+        ax.set_ylabel("machines")
+        ax.set_xlabel("times/s")
+
+        height = 0.8
+
+        # 绘制甘特图
+        for machine in reversed(self.machines):
+            # 记录工件
+            last_job_id = len(self.jobs)
+            for workflow in machine.workflow:
+                if workflow[0] == 0:
+                    ax.barh('m' + str(machine.id), workflow[2] - workflow[1], left=workflow[1], height=height,
+                            color='#ffffff', ec='#000000')
+                elif workflow[0] == 1:
+                    ax.barh('m' + str(machine.id), workflow[2] - workflow[1], left=workflow[1], height=height,
+                            color='#000000', ec='#000000')
+                elif workflow[0] == -1:
+                    ax.barh('m' + str(machine.id), workflow[2] - workflow[1], left=workflow[1], height=height,
+                            color='#808080', ec='#000000')
+        plt.show()
